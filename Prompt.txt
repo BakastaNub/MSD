@@ -1,0 +1,24 @@
+Actúa como un desarrollador Frontend experto en animaciones web modernas y rendimiento. Necesito que crees el código HTML, CSS (usando Tailwind CSS o CSS puro) y JavaScript para una sección de una página web que reacciona al hacer scroll. 
+
+La página tiene tres apartados y necesito que ocurra lo siguiente cuando el usuario haga scroll hacia abajo y entre en cada sección:
+
+1. APARTADO 1 (Reparación de Cocinas):
+   - Al entrar en este apartado, debe activarse una animación de una llama de fuego.
+   - Efecto: Una onda de color naranja/rojo que simula fuego debe expandirse o desplazarse de IZQUIERDA a DERECHA por el fondo del apartado.
+   - Incluye un contenedor o un icono/SVG representativo de una llama que acompañe este movimiento o aparezca con el efecto.
+
+2. APARTADO 2 (Aire Acondicionado):
+   - Al seguir bajando y entrar en este apartado, debe activarse una animación de frío.
+   - Efecto: Una onda de color azul/celeste que simula frío debe desplazarse de DERECHA a IZQUIERDA.
+   - Incluye un elemento visual o SVG de un copo de nieve que aparezca o se desplace con la onda.
+
+3. APARTADO 3 (Otros Servicios):
+   - Al llegar a este último apartado, debe activarse una animación de servicio técnico/mecánico.
+   - Efecto: Una onda de color gris/metalizado debe desplazarse de ABAJO hacia ARRIBA.
+   - Incluye un icono o SVG de una tuerca que gire o aparezca con el movimiento de la onda.
+
+Requisitos técnicos importantes:
+- Usa la API 'Intersection Observer' en JavaScript para detectar cuándo cada apartado entra en el viewport (pantalla) de forma eficiente y activar las animaciones justo a tiempo.
+- Las animaciones de las ondas y los iconos deben ser fluidas, utilizando transiciones de CSS (transform, opacity, translate) para que no afecten el rendimiento de la página.
+- El diseño debe ser responsive (adaptable a móviles y escritorio).
+- Entrega el código limpio, estructurado y listo para probar.
