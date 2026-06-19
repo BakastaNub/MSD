@@ -25,7 +25,6 @@ interface Props {
   section: SectionData
   bgGradient: string
   arrowDirection: 'left' | 'right'
-  icon: React.ReactNode
   particles?: ParticleConfig
   imageRing?: string
   imageShadow?: string
@@ -53,7 +52,6 @@ export default function ServiceSection({
   section,
   bgGradient,
   arrowDirection,
-  icon,
   particles: particleConfig,
   imageRing = 'ring-2 ring-white/20',
   imageShadow = 'shadow-lg',
@@ -67,9 +65,6 @@ export default function ServiceSection({
     arrowDirection === 'left'
       ? 'polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%)'
       : 'polygon(15% 0, 100% 0, 100% 100%, 15% 100%, 0 50%)'
-
-  const isIconLeft = arrowDirection === 'left'
-  const iconSlide = isIconLeft ? { x: -120 } : { x: 120 }
 
   return (
     <section
@@ -107,30 +102,14 @@ export default function ServiceSection({
         />
       ))}
 
-      <div className="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
-        <div
-          className={`flex flex-col ${
-            isIconLeft ? 'md:flex-row' : 'md:flex-row-reverse'
-          } items-center gap-8 md:gap-12 lg:gap-20 w-full py-20`}
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.3, ...iconSlide }}
-            whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
-            className="w-36 h-36 md:w-52 md:h-52 lg:w-72 lg:h-72 shrink-0"
-          >
-            <div className="w-full h-full rounded-full bg-white/[0.07] backdrop-blur-xl flex items-center justify-center shadow-[0_0_60px_rgba(255,255,255,0.08)] border border-white/[0.12]">
-              {icon}
-            </div>
-          </motion.div>
-
+      <div className="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center">
+        <div className="w-full max-w-5xl py-20">
           <motion.div
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-            className="flex-1 w-full bg-white/[0.04] backdrop-blur-md rounded-3xl p-6 md:p-10 lg:p-14 border border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="w-full bg-white/[0.04] backdrop-blur-md rounded-3xl p-6 md:p-10 lg:p-14 border border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
           >
             <motion.div
               initial={{ opacity: 0, y: 30 }}
