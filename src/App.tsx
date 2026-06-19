@@ -2,7 +2,6 @@ import Hero from './components/sections/Hero'
 import Cocinas from './components/sections/Cocinas'
 import Aires from './components/sections/Aires'
 import OtrosServicios from './components/sections/OtrosServicios'
-import FloatingServiceIcon from './components/sections/FloatingServiceIcon'
 import Contacto from './components/sections/Contacto'
 import Footer from './components/sections/Footer'
 
@@ -10,12 +9,9 @@ function App() {
   return (
     <>
       <Hero />
-      <div className="relative">
-        <FloatingServiceIcon />
-        <Cocinas />
-        <Aires />
-        <OtrosServicios />
-      </div>
+      <Cocinas />
+      <Aires />
+      <OtrosServicios />
       <Contacto />
       <Footer />
     </>
