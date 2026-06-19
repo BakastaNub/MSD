@@ -26,8 +26,6 @@ interface ScrollWaveProps {
   gradients?: string[]
   bgColor: string
   direction: 'left' | 'right' | 'up'
-  icon: React.ReactNode
-  iconAnimation?: 'pulse' | 'rotate' | 'none'
   particles?: ParticleConfig
 }
 
@@ -55,8 +53,6 @@ export default function ScrollWave({
   gradients,
   bgColor,
   direction,
-  icon,
-  iconAnimation = 'none',
   particles: particleConfig,
 }: ScrollWaveProps) {
   const ref = useRef<HTMLDivElement>(null)
@@ -77,16 +73,6 @@ export default function ScrollWave({
       case 'up':    return { y: '0%' }
     }
   }
-
-  const iconFrom = (() => {
-    switch (direction) {
-      case 'left':  return { x: -200, opacity: 0, scale: 0.2 }
-      case 'right': return { x: 200, opacity: 0, scale: 0.2 }
-      case 'up':    return { y: 200, opacity: 0, scale: 0.2 }
-    }
-  })()
-
-  const iconTo = { x: 0, y: 0, opacity: 1, scale: 1 }
 
   const particlesList = useMemo(
     () => (particleConfig ? generateParticles(particleConfig) : []),
@@ -137,32 +123,6 @@ export default function ScrollWave({
           }}
         />
       ))}
-
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-30"
-        initial={iconFrom}
-        animate={isInView ? iconTo : iconFrom}
-        transition={{ duration: 0.9, delay: 0.5, ease: 'easeOut' }}
-      >
-        <motion.div
-          animate={
-            isInView && iconAnimation === 'pulse'
-              ? { scale: [1, 1.3, 1] }
-              : isInView && iconAnimation === 'rotate'
-              ? { rotate: 360 }
-              : {}
-          }
-          transition={
-            iconAnimation === 'pulse'
-              ? { duration: 2, repeat: Infinity, ease: 'easeInOut' }
-              : iconAnimation === 'rotate'
-              ? { duration: 6, repeat: Infinity, ease: 'linear' }
-              : {}
-          }
-        >
-          {icon}
-        </motion.div>
-      </motion.div>
     </div>
   )
 }

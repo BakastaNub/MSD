@@ -24,6 +24,7 @@ export const NAV_LINKS = [
 export interface SectionImage {
   src: string
   alt: string
+  caption: string
 }
 
 export interface ServiceSection {
@@ -39,9 +40,21 @@ export const COCINAS: ServiceSection = {
   description:
     'Reparamos todo tipo de cocinas domésticas e industriales. Diagnóstico rápido, repuestos originales y garantía en todas nuestras intervenciones.',
   images: [
-    { src: '/images/cocina-domestica.jpg', alt: 'Cocina doméstica' },
-    { src: '/images/cocina-industrial.jpg', alt: 'Cocina industrial' },
-    { src: '/images/tecnico-cocina.jpg', alt: 'Técnico reparando cocina' },
+    {
+      src: '/images/cocina-domestica.jpg',
+      alt: 'Cocina doméstica',
+      caption: 'Reparación de hornos y placas de cocina',
+    },
+    {
+      src: '/images/cocina-industrial.jpg',
+      alt: 'Cocina industrial',
+      caption: 'Mantenimiento de cocinas industriales',
+    },
+    {
+      src: '/images/tecnico-cocina.jpg',
+      alt: 'Técnico reparando cocina',
+      caption: 'Diagnóstico técnico especializado',
+    },
   ],
 }
 
@@ -51,9 +64,21 @@ export const AIRES: ServiceSection = {
   description:
     'Instalación, mantenimiento y reparación de aires acondicionados domésticos e industriales. Climatización eficiente para tu hogar o negocio.',
   images: [
-    { src: '/images/aire-domestico.jpg', alt: 'Aire acondicionado doméstico' },
-    { src: '/images/aire-industrial.jpg', alt: 'Aire acondicionado industrial' },
-    { src: '/images/tecnico-aire.jpg', alt: 'Técnico realizando mantenimiento' },
+    {
+      src: '/images/aire-domestico.jpg',
+      alt: 'Aire acondicionado doméstico',
+      caption: 'Instalación de sistemas de climatización',
+    },
+    {
+      src: '/images/aire-industrial.jpg',
+      alt: 'Aire acondicionado industrial',
+      caption: 'Mantenimiento preventivo anual',
+    },
+    {
+      src: '/images/tecnico-aire.jpg',
+      alt: 'Técnico realizando mantenimiento',
+      caption: 'Reparación de averías urgentes',
+    },
   ],
 }
 
@@ -63,9 +88,21 @@ export const OTROS_SERVICIOS: ServiceSection = {
   description:
     'Realizamos además otros servicios técnicos y soluciones personalizadas según las necesidades del cliente. Consulta sin compromiso.',
   images: [
-    { src: '/images/servicio-tecnico-1.jpg', alt: 'Servicio técnico' },
-    { src: '/images/servicio-tecnico-2.jpg', alt: 'Reparación especializada' },
-    { src: '/images/servicio-tecnico-3.jpg', alt: 'Solución personalizada' },
+    {
+      src: '/images/servicio-tecnico-1.jpg',
+      alt: 'Servicio técnico',
+      caption: 'Reparación de electrodomésticos',
+    },
+    {
+      src: '/images/servicio-tecnico-2.jpg',
+      alt: 'Reparación especializada',
+      caption: 'Instalaciones técnicas a medida',
+    },
+    {
+      src: '/images/servicio-tecnico-3.jpg',
+      alt: 'Solución personalizada',
+      caption: 'Asesoramiento técnico personalizado',
+    },
   ],
 }
 
