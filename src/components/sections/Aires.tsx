@@ -24,7 +24,7 @@ export default function Aires() {
         direction="right"
         panelColor="bg-gradient-to-br from-blue-600 to-blue-500"
         icon={
-          <svg className="w-40 h-40 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-28 h-28 md:w-36 h-36 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={0.8} d="M12 2v4m0 12v4M2 12h4m12 0h4M5.64 5.64l12.72 12.72M18.36 5.64L5.64 18.36M12 2l-3 3m3-3l3 3M12 22l-3-3m3 3l3-3M2 12l3 3M2 12l3-3M22 12l-3 3m3-3l-3-3" />
           </svg>
         }
