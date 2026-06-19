@@ -1,131 +1,185 @@
+import { useMemo } from 'react'
 import { motion } from 'framer-motion'
-import type { ServiceSection } from '../../data/company'
+import type { ServiceSection as SectionData } from '../../data/company'
+
+interface ParticleConfig {
+  count: number
+  colors: string[]
+  driftXRange: [number, number]
+  driftYRange: [number, number]
+}
+
+interface Particle {
+  id: number
+  x: number
+  y: number
+  size: number
+  color: string
+  delay: number
+  duration: number
+  driftX: number
+  driftY: number
+}
 
 interface Props {
-  section: ServiceSection
-  direction?: 'left' | 'right' | 'up'
-  panelGradient: string
-  ringColor: string
-  shadowColor: string
+  section: SectionData
+  bgGradient: string
+  arrowDirection: 'left' | 'right'
   icon: React.ReactNode
+  particles?: ParticleConfig
+  imageRing?: string
+  imageShadow?: string
+}
+
+function generateParticles(config: ParticleConfig): Particle[] {
+  const items: Particle[] = []
+  for (let i = 0; i < config.count; i++) {
+    items.push({
+      id: i,
+      x: 5 + ((i * 137.5) % 90),
+      y: 5 + ((i * 89.3) % 90),
+      size: 2 + ((i * 3) % 5),
+      color: config.colors[i % config.colors.length],
+      delay: (i % 6) * 0.2,
+      duration: 1.5 + ((i * 0.7) % 2),
+      driftX: config.driftXRange[0] + ((i * 1.3) % (config.driftXRange[1] - config.driftXRange[0])),
+      driftY: config.driftYRange[0] + ((i * 1.7) % (config.driftYRange[1] - config.driftYRange[0])),
+    })
+  }
+  return items
 }
 
 export default function ServiceSection({
   section,
-  direction = 'left',
-  panelGradient,
-  ringColor,
-  shadowColor,
+  bgGradient,
+  arrowDirection,
   icon,
+  particles: particleConfig,
+  imageRing = 'ring-2 ring-white/20',
+  imageShadow = 'shadow-lg',
 }: Props) {
-  const panelFrom = (() => {
-    switch (direction) {
-      case 'left':  return { x: -400, opacity: 0 }
-      case 'right': return { x: 400, opacity: 0 }
-      case 'up':    return { y: 400, opacity: 0 }
-    }
-  })()
+  const particlesList = useMemo(
+    () => (particleConfig ? generateParticles(particleConfig) : []),
+    [particleConfig],
+  )
 
-  const containerClass = 'flex flex-col md:flex-row min-h-[480px]'
-  const panelClasses = `w-full md:w-[35%] flex items-center justify-center p-12 md:p-16 ${panelGradient}`
-  const contentBg = 'bg-slate-100'
+  const arrowClipPath =
+    arrowDirection === 'left'
+      ? 'polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%)'
+      : 'polygon(15% 0, 100% 0, 100% 100%, 15% 100%, 0 50%)'
 
-  const panelStyle = direction === 'left'
-    ? { clipPath: 'polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%)' }
-    : direction === 'right'
-    ? { clipPath: 'polygon(15% 0, 100% 0, 100% 100%, 15% 100%, 0 50%)' }
-    : {}
-
-  const iconFrom = (() => {
-    switch (direction) {
-      case 'left':  return { x: -200, opacity: 0, scale: 0 }
-      case 'right': return { x: 200, opacity: 0, scale: 0 }
-      case 'up':    return { y: 200, opacity: 0, scale: 0 }
-    }
-  })()
-
-  const contentFrom = { opacity: 0, y: 40 }
+  const isIconLeft = arrowDirection === 'left'
+  const iconSlide = isIconLeft ? { x: -120 } : { x: 120 }
 
   return (
-    <section id={section.id} className={containerClass}>
-      <motion.div
-        initial={panelFrom}
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
-        animate={{ x: 0, y: 0, opacity: 1 }}
-        transition={{ duration: 0.9, ease: 'easeOut' }}
-        className={panelClasses}
-        style={panelStyle}
-      >
+    <section
+      id={section.id}
+      className={`relative min-h-screen overflow-hidden ${bgGradient}`}
+    >
+      <div
+        className="absolute left-0 top-0 bottom-0 w-[45%] md:w-[38%] pointer-events-none z-10"
+        style={{
+          clipPath: arrowClipPath,
+          background: 'rgba(255,255,255,0.06)',
+        }}
+        aria-hidden="true"
+      />
+
+      {particlesList.map((p) => (
         <motion.div
-          initial={iconFrom}
-          whileInView="visible"
+          key={p.id}
+          className="absolute rounded-full pointer-events-none z-10"
+          style={{
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            width: p.size,
+            height: p.size,
+            backgroundColor: p.color,
+          }}
+          initial={{ opacity: 0, x: 0, y: 0 }}
+          whileInView={{ opacity: [0, 1, 0], x: p.driftX, y: p.driftY }}
           viewport={{ once: true, margin: '-50px' }}
-          animate={{ x: 0, y: 0, opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.3, ease: 'easeOut' }}
-          className="drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+          transition={{
+            duration: p.duration,
+            delay: p.delay,
+            ease: 'easeOut',
+          }}
+        />
+      ))}
+
+      <div className="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
+        <div
+          className={`flex flex-col ${
+            isIconLeft ? 'md:flex-row' : 'md:flex-row-reverse'
+          } items-center gap-8 md:gap-12 lg:gap-20 w-full py-20`}
         >
-          {icon}
-        </motion.div>
-      </motion.div>
-
-      <div className={`w-full md:w-[65%] ${contentBg} relative overflow-hidden`}>
-        <div className="absolute inset-0 pointer-events-none opacity-[0.04]">
-          <svg className="w-full h-full" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
-            <circle cx="50" cy="50" r="40" fill="currentColor" className="text-slate-600" />
-            <rect x="300" y="100" width="60" height="60" rx="8" fill="currentColor" className="text-slate-600" />
-            <circle cx="350" cy="300" r="30" fill="currentColor" className="text-slate-600" />
-            <rect x="40" y="280" width="50" height="50" rx="6" fill="currentColor" className="text-slate-600" />
-            <circle cx="200" cy="380" r="25" fill="currentColor" className="text-slate-600" />
-          </svg>
-        </div>
-
-        <div className="relative z-10 h-full flex flex-col justify-center px-6 md:px-16 py-16 md:py-20">
           <motion.div
-            initial={contentFrom}
-            whileInView="visible"
+            initial={{ opacity: 0, scale: 0.3, ...iconSlide }}
+            whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="text-center mb-10"
+            transition={{ duration: 0.9, ease: 'easeOut' }}
+            className="w-36 h-36 md:w-52 md:h-52 lg:w-72 lg:h-72 shrink-0"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
-              {section.title}
-            </h2>
-            <p className="text-lg md:text-xl font-light text-slate-500 mb-1">
-              {section.subtitle}
-            </p>
-            <p className="text-sm text-slate-400 uppercase tracking-widest">
-              {section.tagline}
-            </p>
+            <div className="w-full h-full rounded-full bg-white/[0.07] backdrop-blur-xl flex items-center justify-center shadow-[0_0_60px_rgba(255,255,255,0.08)] border border-white/[0.12]">
+              {icon}
+            </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto w-full">
-            {section.images.map((img, idx) => (
-              <motion.div
-                key={img.src}
-                initial={contentFrom}
-                whileInView="visible"
-                viewport={{ once: true, margin: '-50px' }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.15, ease: 'easeOut' }}
-              >
-                <div
-                  className={`aspect-square bg-slate-200 rounded-xl overflow-hidden ${ringColor} ${shadowColor}`}
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+            className="flex-1 w-full bg-white/[0.04] backdrop-blur-md rounded-3xl p-6 md:p-10 lg:p-14 border border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.6, delay: 0.35, ease: 'easeOut' }}
+              className="text-center mb-8 md:mb-10"
+            >
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
+                {section.title}
+              </h2>
+              <p className="text-lg md:text-xl font-light text-white/70 mb-1">
+                {section.subtitle}
+              </p>
+              <p className="text-sm text-white/50 uppercase tracking-[0.15em]">
+                {section.tagline}
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5 max-w-4xl mx-auto">
+              {section.images.map((img, idx) => (
+                <motion.div
+                  key={img.src}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.45 + idx * 0.15,
+                    ease: 'easeOut',
+                  }}
                 >
-                  <img
-                    src={img.src}
-                    alt={img.alt}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <p className="text-xs text-slate-500 text-center mt-2 leading-tight">
-                  {img.caption}
-                </p>
-              </motion.div>
-            ))}
-          </div>
+                  <div
+                    className={`aspect-square rounded-xl overflow-hidden ${imageRing} ${imageShadow}`}
+                  >
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <p className="text-xs text-white/50 text-center mt-2 leading-tight">
+                    {img.caption}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
