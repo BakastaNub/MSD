@@ -30,6 +30,8 @@ export interface SectionImage {
 export interface ServiceSection {
   id: string
   title: string
+  subtitle: string
+  tagline: string
   description: string
   images: SectionImage[]
 }
@@ -37,6 +39,8 @@ export interface ServiceSection {
 export const COCINAS: ServiceSection = {
   id: 'cocinas',
   title: 'Reparación de Cocinas',
+  subtitle: 'Expertos en reparación',
+  tagline: 'Técnicos especializados',
   description:
     'Reparamos todo tipo de cocinas domésticas e industriales. Diagnóstico rápido, repuestos originales y garantía en todas nuestras intervenciones.',
   images: [
@@ -61,6 +65,8 @@ export const COCINAS: ServiceSection = {
 export const AIRES: ServiceSection = {
   id: 'aires',
   title: 'Aires Acondicionados',
+  subtitle: 'Climatización eficiente',
+  tagline: 'Instalación y mantenimiento',
   description:
     'Instalación, mantenimiento y reparación de aires acondicionados domésticos e industriales. Climatización eficiente para tu hogar o negocio.',
   images: [
@@ -85,6 +91,8 @@ export const AIRES: ServiceSection = {
 export const OTROS_SERVICIOS: ServiceSection = {
   id: 'otros',
   title: 'Otros Servicios Técnicos',
+  subtitle: 'Soluciones a medida',
+  tagline: 'Consultoría técnica',
   description:
     'Realizamos además otros servicios técnicos y soluciones personalizadas según las necesidades del cliente. Consulta sin compromiso.',
   images: [
